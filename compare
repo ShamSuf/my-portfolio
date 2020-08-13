@@ -15,17 +15,17 @@ server {
  
     location ^~ /_plugin/kibana {
         # Forward requests to Kibana
-        proxy_pass https://vpc-shamounskibana-7lvcohekpzxabnhnmmonrvwadi.ap-southeast-2.es.amazonaws.com/_plugin/kibana/;
+        proxy_pass https://vpc-mykibana-111xxx.us-east1.es.amazonaws.com/_plugin/kibana;
  
         # Handle redirects to Amazon Cognito
-        proxy_redirect https://kibanashamouns.auth.ap-southeast-2.amazoncognito.com/ https://$host;
+        proxy_redirect https://mydomain.auth.us-east-1.amazoncognito.com https://$host;
  
         # Update cookie domain and path
-        proxy_cookie_domain vpc-shamounskibana-7lvcohekpzxabnhnmmonrvwadi.ap-southeast-2.es.amazonaws.com $host;
+        proxy_cookie_domain vpc-mykibana-111xxx.us-east1.es.amazonaws.com $host;
  
         proxy_set_header Accept-Encoding "";
         sub_filter_types *;
-        sub_filter $ES_endpoint $host;
+        sub_filter vpc-mykibana-111xxx.us-east1.es.amazonaws.com $host;
         sub_filter_once off;
  
         # Response buffer settings
@@ -36,15 +36,15 @@ server {
  
     location ~ \/(log|sign|error|fav|forgot|change|confirm) {
         # Forward requests to Cognito
-        proxy_pass https://kibanashamouns.auth.ap-southeast-2.amazoncognito.com/;
+        proxy_pass https://mydomain.auth.us-east-1.amazoncognito.com;
  
         # Handle redirects to Kibana
-        proxy_redirect https://vpc-shamounskibana-7lvcohekpzxabnhnmmonrvwadi.ap-southeast-2.es.amazonaws.com https://$host;
+        proxy_redirect https://vpc-mykibana-111xxx.us-east1.es.amazonaws.com https://$host;
  
         # Handle redirects to Amazon Cognito
-        proxy_redirect https://kibanashamouns.auth.ap-southeast-2.amazoncognito.com/ https://$host;
+        proxy_redirect https://mydomain.auth.us-east-1.amazoncognito.com https://$host;
  
         # Update cookie domain
-        proxy_cookie_domain kibanashamouns.auth.ap-southeast-2.amazoncognito.com/ $host;
+        proxy_cookie_domain mydomain.auth.us-east-1.amazoncognito.com $host;
     }
 }
